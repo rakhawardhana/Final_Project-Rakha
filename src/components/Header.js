@@ -1,43 +1,159 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-// import {
-//     Button,
-//     Collapse,
-//     DropdownToggle,
-//     DropdownMenu,
-//     DropdownItem,
-//     NavbarBrand,
-//     Navbar,
-//     NavbarToggler, 
-//     Nav,
-//     NavItem,
-//     UncontrolledDropdown
-//     } from 'reactstrap';
+import { connect } from 'react-redux'
+import { logoutUser } from '../actions'
+
+
+
+
+// class Header extends Component {
+// 	render() {
+// 		return (
+// 			<header>
+// 				<nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+// 					<div className="container">
+// 						<Link className="navbar-brand" to="/">
+// 							COFFEE EX MACHINE
+// 						</Link>
+
+// 						<ul className="navbar-nav mr-auto">
+// 							<li className="nav-item active">
+// 								<Link className="nav-link"  to="./Aboutus">
+// 									SIAPA KITA?
+// 									<span className="sr-only" />
+// 								</Link>
+// 							</li>
+// 						</ul>
+// 					</div>
+// 				</nav>
+// 			</header>
+// 		);
+// 	}
+// }
+
+// export default Header;
+
+import {
+    Button,
+    Collapse,
+    Navbar,
+    NavbarToggler,
+    NavbarBrand,
+    Nav,
+    NavItem,
+    // NavLink,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem } from 'reactstrap';
 
 
 class Header extends Component {
-	render() {
-		return (
-			<header>
-				<nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-					<div className="container">
-						<Link className="navbar-brand" to="/">
-							COFFEE EX MACHINE
-						</Link>
+    constructor(props) {
+        super(props);
+    
+        this.toggle = this.toggle.bind(this);
+        this.state = {
+          isOpen: false,
+        //   productcart: []
+        };
+      }
+    toggle() {
+        this.setState({
+          isOpen: !this.state.isOpen
+        });
+      }
 
-						<ul className="navbar-nav mr-auto">
-							<li className="nav-item active">
-								<Link className="nav-link"  to="./Aboutus">
-									SIAPA KITA?
-									<span className="sr-only" />
-								</Link>
-							</li>
-						</ul>
-					</div>
-				</nav>
-			</header>
-		);
-	}
+  
+
+    onButtonClick = () => {
+        // menghapus username dari redux state
+        this.props.logoutUser()
+    }
+
+    
+
+    render () {
+
+         if(this.props.user.name === ''){
+        // Render ketika belum login
+            return (
+                <div>
+                    <Navbar color="black" light expand="md">
+                    <NavbarBrand href="/">COFFEE EX MACHINE</NavbarBrand>
+					<NavbarBrand href="./Aboutus">SIAPA KITA?</NavbarBrand>
+                    <NavbarToggler onClick={this.toggle} />
+                    <Collapse isOpen={this.state.isOpen} navbar>
+                        <Nav className="ml-auto" navbar >
+                        <NavItem>
+                            <Link to='/' >All Products</Link>
+                        </NavItem>
+                        <NavItem>
+                            <Link to='/register'>
+                                <Button color="primary" className="mx-3">Register</Button>
+                            </Link>
+                        </NavItem>
+                        <NavItem>
+                            <Link to='/login' >
+                                <Button color="success">Login</Button>
+                            </Link>
+                        </NavItem>
+                        </Nav>
+                    </Collapse>
+                    </Navbar>
+                </div>
+            )
+        } 
+
+        return (
+            <div>
+                <Navbar color="light" light expand="md">
+                    <NavbarBrand href="/">COFFEE EX MACHINE</NavbarBrand>
+					<NavbarBrand href="./Aboutus">SIAPA KITA?</NavbarBrand>
+                <NavbarToggler onClick={this.toggle} />
+                <Collapse isOpen={this.state.isOpen} navbar>
+                    <Nav className="ml-auto" navbar>
+                    <NavItem className='mt-2'>
+                        <Link to='/' >All Products</Link>
+                    </NavItem>
+                    {/* <NavItem className='mt-2 ml-auto'>
+                        <Link to='/checkout' >
+                            <button className = 'btn btn-primary ml-4 mt-auto'>{this.jumlahCart()}
+                            <img id='cart' className='ml-2 mr-2' src='https://image.flaticon.com/icons/svg/34/34568.svg'></img>Shopping Cart 
+                            </button>
+                        </Link>
+                    </NavItem> */}
+                    <UncontrolledDropdown nav inNavbar>
+                    <DropdownToggle nav caret>
+                    Hallo, {this.props.user.username}
+                    </DropdownToggle>
+                    <DropdownMenu right>
+                        <DropdownItem>
+                        <Link to='/manageProduct' >Manage Product</Link>
+                        </DropdownItem>
+                        <DropdownItem divider />
+                        <Link to='/login' >
+                        <Button className='dropdown-item' onClick={this.onButtonClick}>
+                            Logout
+                        </Button>
+                        </Link>
+                    </DropdownMenu>
+                    </UncontrolledDropdown>
+                    </Nav>
+                </Collapse>
+                </Navbar>
+            </div>
+            
+                    
+          );
+        }
+    
 }
 
-export default Header;
+const mapStateToProps = state => {
+    return {
+        user: state.auth // {id, username}
+    }
+}
+
+export default connect(mapStateToProps, {logoutUser})(Header)
