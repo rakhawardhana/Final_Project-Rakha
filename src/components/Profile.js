@@ -14,7 +14,7 @@ class Profile extends Component {
       axios.get('/users/' + this.props.data_id)
          .then(res => {
             this.setState({ data: res.data });
-
+            console.log(res.data)
          })
    }
 
@@ -23,7 +23,7 @@ class Profile extends Component {
       
       if (this.state.data) {
          const avatar = this.state.data[0]
-         console.log(avatar)
+         console.log(this.state.data)
          return (
             <div className="container" style={{ marginTop: '80px' }}>
                <Jumbotron >

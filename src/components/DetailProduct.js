@@ -18,6 +18,7 @@ class DetailProduct extends Component {
     
             axios.get('http://localhost:2019/products/' + pro_id)
             .then(res => {
+                console.log(res.data.length)
                 this.setState({
                     product: res.data
                 })

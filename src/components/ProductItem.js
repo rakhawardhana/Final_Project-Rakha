@@ -9,7 +9,7 @@ class ProductItem extends Component {
     //const id itu dari id user dari redux, buat patokan table cart
 
     addToCart = () => {
-        const quantity = Number.parseInt(this.quantity.value)
+        var quantity = Number.parseInt(this.quantity.value)
         const id = this.props.user.id
         // const nama =    this.props.item.nama
         // const deskripsi =  this.props.item.desc
@@ -24,15 +24,20 @@ class ProductItem extends Component {
                 axios.get(
                     'http://localhost:2019/cart_product/' + product_id
                 ).then( res => {
-                    if(res.data.length > 0) 
+                    var newQuantity = res.data.quantity 
+                    console.log(newQuantity)
+                    //console.log(res.data.length)
+                    if(res.data) 
                 // kalau udah ada, jadinya nge get cart buat dapetin quantity lama buat di jumlahkan sama quantity baru
                 // nanti di back end udah ada logicnya, menentukan jumlah quantity itu lebih besar ga dari product.quantity 
                     {
                         // axios.get('http://localhost:2019/cart_product/' + product_id).then(res => {
                             axios.patch('http://localhost:2019/cart_product/' + product_id, {
-                                quantity: res.data.quantity + quantity
+                                quantity: newQuantity + quantity
+                            }).then(res => {
+                                alert('QUANTITY DITAMBAHKAN')
                             })
-                                    return res.data.quantity
+                                    
                             //})
                       
                      }
