@@ -6,61 +6,58 @@ import axios from 'axios';
 
 class ProductItem extends Component {
 
+    //const id itu dari id user dari redux, buat patokan table cart
 
     addToCart = () => {
-        const jumlah = Number.parseInt(this.name.value)
-        const idUsername = this.props.user.id
-        const nama =    this.props.item.nama
-        const deskripsi =  this.props.item.desc
-        const price = this.props.item.price
-        const picture = this.props.item.src
-        const idBarang = this.props.item.id
-        console.log(jumlah)
+        const quantity = Number.parseInt(this.quantity.value)
+        const id = this.props.user.id
+        // const nama =    this.props.item.nama
+        // const deskripsi =  this.props.item.desc
+        // const price = this.props.item.price
+        // const picture = this.props.item.src
+        const product_id = this.props.item.id
+        // console.log(jumlah)
         
-     
-        if(jumlah > 0 && idUsername !== ""){
+        // get cart untuk tau itu udah ada apa belum di cart
+
+        if(quantity > 0 && id !== ""){
                 axios.get(
-                    'http://localhost:2019/cart',
-                    {
-                        params: {
-                        
-                            idBarang: idBarang
-                        } 
-                    }
+                    'http://localhost:2019/cart_product/' + product_id
                 ).then( res => {
                     if(res.data.length > 0) 
-                
+                // kalau udah ada, jadinya nge get cart buat dapetin quantity lama buat di jumlahkan sama quantity baru
+                // nanti di back end udah ada logicnya, menentukan jumlah quantity itu lebih besar ga dari product.quantity 
                     {
-                        axios.get('http://localhost:2019/cart/' + idBarang).then(res => {
-                            axios.patch('http://localhost:2019/cart/' + idBarang, {
-                                jumlah: res.data.jumlah + jumlah
+                        // axios.get('http://localhost:2019/cart_product/' + product_id).then(res => {
+                            axios.patch('http://localhost:2019/cart_product/' + product_id, {
+                                quantity: res.data.quantity + quantity
                             })
-                                    return res.data.jumlah
-                            })
+                                    return res.data.quantity
+                            //})
                       
-                        
-
                      }
                         
                      else { 
-                        axios.post('http://localhost:2019/cart',
+                        axios.post('http://localhost:2019/cart_product',
                         {
-                            idUsername: idUsername,
-                            idBarang: idBarang,
-                            id: idBarang,
-                            nama: nama,
-                            jumlah: jumlah,
-                            price: price,
-                            picture: picture,
-                            deskripsi: deskripsi
+                            id, product_id, quantity
+                            //idBarang: idBarang,
+                            
+                        
+                            //price: price,
+                            // picture: picture,
+                            // deskripsi: deskripsi
                         }).then(res=>{
                             alert('ADD NEW PRODUCT TO CART')
                             // document.location.reload(true)
+                        }).catch(error => {
+                            console.log(error)
+                            alert('DILARANG INPUT MELEBIHI STOCK')
                         })
                     }
                 })    
         } else {
-            if(idUsername === ""){ 
+            if(id === ""){ 
                 alert('LOGIN PLEASE!!')
             } else{ 
                 alert('ISI DULU JUMLAHNYA')
@@ -72,6 +69,7 @@ class ProductItem extends Component {
 
 
     render(){
+        console.log(this.props)
         return (
             <div className="card col-3 m-5">
                 <img className='list' alt='' style={{width: 150, height: 150}} src={`http://localhost:2019/products/avatar/${this.props.item.avatar}`}/>
@@ -81,7 +79,7 @@ class ProductItem extends Component {
                     <p className='card-text'> {this.props.item.description}</p>
                     <p className='card-text'>Rp {this.props.item.price}</p>
                     <p className='card-number'> {this.props.item.quantity}</p>
-                    <input ref={input => this.name = input} className="form-control" defaultValue="0" type="number"/> 
+                    <input ref={input => this.quantity = input} className="form-control" defaultValue="0" type="number"/> 
                     <Link to={'/DetailProduct/' + this.props.item.id}>
                         <button className='btn btn-outline-primary btn-block'>Details</button>
                     </Link>
