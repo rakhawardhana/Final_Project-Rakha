@@ -61,3 +61,56 @@ export const logoutUser = () => {
     cookie.remove(`dataUser`)
     return { type: `LOGOUT_SUCCESS` }
  }
+
+ export const onLoginAdmin = (email,password) =>{
+    return(dispatch)=>{
+        if(email === '' || password === ''){
+            alert('ISI EMAIL DAN PASSWORDNYA BROK!')
+        }else{
+            axios.post('/admin/login',
+                {
+                    email,
+                    password
+                }
+            ).then(res=>{
+                if(typeof(res.data) === 'string'){
+                    console.log('Eror: ' + res.data)
+                }else{
+                    console.log(res)
+                    
+                    dispatch({
+                        type:'ADMIN_LOGIN_SUCCESS',
+                        payload:{
+                            id: res.data.id,
+                            username: res.data.username,
+                            email: res.data.email
+                        }
+                    })
+
+                    cookie.set('admin',{id : res.data.id, username: res.data.username, email: res.data.email})
+
+                   
+                }
+            })
+        }
+    }
+}
+
+export const onAdminLogout = () =>{
+   
+    cookie.remove('admin')
+    return{
+        type:'ADMIN_LOGOUT_SUCCESS'
+    }
+}
+
+export const keepLogin_admin = (admin) =>{
+    return{
+        type:'ADMIN_LOGIN_SUCCESS',
+        payload:{
+            id: admin.id,
+            username: admin.username,
+            email: admin.email
+        }
+    }
+}
