@@ -36,6 +36,9 @@ class ProductItem extends Component {
                                 quantity: newQuantity + quantity
                             }).then(res => {
                                 alert('QUANTITY DITAMBAHKAN')
+                            }).catch(error => {
+                                console.log(error)
+                                alert('DILARANG INPUT MELEBIHI STOCK')
                             })
                                     
                             //})

@@ -17,6 +17,7 @@ import ManageProduct from './ManageProduct'
 import DetailProduct from './DetailProduct'
 import Profile from './Profile'
 import EditProfile from './EditProfile'
+import Cart from './Cart'
 
 //const cookie = new cookies()
 const cookie = new cookies()
@@ -52,6 +53,7 @@ class App extends Component {
                      <Route path='/Item' component={Item}/>
                      <Route path='/profile' component={Profile}/>
                      <Route path='/editprofile' component={EditProfile}/>
+                     <Route path='/cart' component={Cart}/>
                   {/* <Footer/> */}
                 </div>
 

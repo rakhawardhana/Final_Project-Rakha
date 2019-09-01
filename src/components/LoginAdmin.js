@@ -40,17 +40,11 @@ class LoginAdmin extends Component {
             )
         }
 
-        return (
-            <div>
-
-                <h1>WES LOGIN BROK</h1>
-
-
-            </div>
+        return <Redirect to='/manageproduct'/>
             
             
             
-            )
+            
         
     }
 
