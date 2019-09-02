@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from '../config/axios'
-// import {redirect} from 'react-router-dom'
+import { connect } from 'react-redux'
+import {Redirect} from 'react-router-dom'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 
@@ -196,6 +197,7 @@ class ManageProduct extends Component {
     }
 
     renderList = () => {
+       
         return this.state.products.map( item => { // {id, name, price, desc, src}
             return (
                 
@@ -224,158 +226,170 @@ class ManageProduct extends Component {
         })
     }
     render () {
-        return (
-        <div className="container">
-            <div>
-              {/* <Button color="danger" onClick={this.toggle}>{this.props.buttonLabel}</Button> */}
-              <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-                <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
-                <ModalBody>
+        if (this.props.admin.id) {
+            return (
+                <div className="container">
                     <div>
-                    <input className='form-control' type='hidden' value = {this.state.id}
-                            ref={input => {this.id = input}}/>
-                    <input className='form-control' type='text' 
-                            ref={input => {this.nama = input}}
-                            onChange={event => {
-                                this.setState({nama: event.target.value})
+                      {/* <Button color="danger" onClick={this.toggle}>{this.props.buttonLabel}</Button> */}
+                      <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+                        <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
+                        <ModalBody>
+                            <div>
+                            <input className='form-control' type='hidden' value = {this.state.id}
+                                    ref={input => {this.id = input}}/>
+                            <input className='form-control' type='text' 
+                                    ref={input => {this.nama = input}}
+                                    onChange={event => {
+                                        this.setState({nama: event.target.value})
+                                                // console.log(e.target.files)
+                                            }}
+                                    
+                                    />
+                            <select onChange={event => {
+                                        //console.log(event.target.value)
+                                        this.setState({selected_category: event.target.value})
+                                    }} className="form-control">
+                                        {this.state.categories}
+                            </select>
+                            <input className='form-control' type='text' 
+                                    ref={input => {this.desc = input}}
+                                    onChange={event => {
+                                        this.setState({desc: event.target.value})
+                                                // console.log(e.target.files)
+                                            }}
+                                    />
+                            <input className='form-control' type='number' 
+                                    ref={input => {this.price = input}}
+                                    onChange={event => {
+                                        this.setState({price: event.target.value})
+                                                // console.log(e.target.files)
+                                            }}
+                                    />
+                            <input className='form-control' type='number'
+                                    ref={input => {this.quantity = input}}
+                                    onChange={event => {
+                                        this.setState({quantity: event.target.value})
+                                                // console.log(e.target.files)
+                                            }}
+                                    />
+                            <input type='file' ref={input => {this.avatar = input}}  onChange={event => {
+                                this.setState({avatar: event.target.files[0]})
                                         // console.log(e.target.files)
-                                    }}
-                            
-                            />
-                    <select onChange={event => {
-                                //console.log(event.target.value)
-                                this.setState({selected_category: event.target.value})
-                            }} className="form-control">
-                                {this.state.categories}
-                    </select>
-                    <input className='form-control' type='text' 
-                            ref={input => {this.desc = input}}
-                            onChange={event => {
-                                this.setState({desc: event.target.value})
-                                        // console.log(e.target.files)
-                                    }}
-                            />
-                    <input className='form-control' type='number' 
-                            ref={input => {this.price = input}}
-                            onChange={event => {
-                                this.setState({price: event.target.value})
-                                        // console.log(e.target.files)
-                                    }}
-                            />
-                    <input className='form-control' type='number'
-                            ref={input => {this.quantity = input}}
-                            onChange={event => {
-                                this.setState({quantity: event.target.value})
-                                        // console.log(e.target.files)
-                                    }}
-                            />
-                    <input type='file' ref={input => {this.avatar = input}}  onChange={event => {
-                        this.setState({avatar: event.target.files[0]})
-                                // console.log(e.target.files)
-                            }}/>    
+                                    }}/>    
+                            </div>
+                        </ModalBody>
+                         <ModalFooter>
+                           <Button color="primary"  onClick={() => {
+                                this.toggle()
+                                this.edit()}} >Do Something</Button>
+                           {/* {' '} */}
+                           <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+                        </ModalFooter>
+                      </Modal>
                     </div>
-                </ModalBody>
-                 <ModalFooter>
-                   <Button color="primary"  onClick={() => {
-                        this.toggle()
-                        this.edit()}} >Do Something</Button>
-                   {/* {' '} */}
-                   <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-                </ModalFooter>
-              </Modal>
-            </div>
-            <h1 className="display-4 text-center">List Product</h1>
-            <table className="table table-hover mb-5">
-                <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">NAME</th>
-                        <th scope="col">CATEGORY</th>
-                        <th scope="col">DESC</th>
-                        <th scope="col">PRICE</th>
-                        <th scope="col">QUANTITY</th>
-                        <th scope="col">PICTURE</th>
+                    <h1 className="display-4 text-center">List Product</h1>
+                    <table className="table table-hover mb-5">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">NAME</th>
+                                <th scope="col">CATEGORY</th>
+                                <th scope="col">DESC</th>
+                                <th scope="col">PRICE</th>
+                                <th scope="col">QUANTITY</th>
+                                <th scope="col">PICTURE</th>
+        
+                                <th scope="col">ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.renderList()}
+                        </tbody>
+                    </table>
+                    <h1 className="display-4 text-center">Search Product</h1>
+                    <table className="table text-center">
+                        <thead>
+                            <tr>
+                            {/* <th scope="col">ID</th> */}
+                                <th scope="col">NAME</th>
+                                <th scope="col">CATEGORY</th>
+                                <th scope="col">MIN</th>
+                                <th scope="col">MAX</th>
+                                <th scope="col">ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="col"><input ref={input => this.name = input} className="form-control" type="text" /></th>
+                                <th scope="col">
+                                    {/* <input ref={input => this.category = input} className="form-control" type="text" /> */}
+                                    <select onChange={event => {
+                                        //console.log(event.target.value)
+                                        this.setState({selected_category: event.target.value})
+                                    }} className="form-control">
+                                        {this.state.categories}
+                                    </select>
+                                </th>
+                                <th scope="col"><input ref={input => this.min = input} className="form-control" type="number" /></th>
+                                <th scope="col"><input ref={input => this.max = input} className="form-control" type="number" /></th>
+            
+                                <th scope="col"><button className="btn btn-outline-warning" onClick={this.onBtnSearch}>Search</button></th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h1 className="display-4 text-center">Input Product</h1>
+                    <table className="table text-center">
+                        <thead>
+                            <tr>
+                            {/* <th scope="col">ID</th> */}
+                                <th scope="col">NAME</th>
+                                <th scope="col">CATEGORY</th>
+                                <th scope="col">DESC</th>
+                                <th scope="col">PRICE</th>
+                                <th scope="col">QUANTITY</th>
+                                <th scope="col">PICTURE</th>
+                                <th scope="col">ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="col"><input ref={input => this.nama = input} className="form-control" type="text" /></th>
+                                <th scope="col">
+                                    {/* <input ref={input => this.category = input} className="form-control" type="text" /> */}
+                                    <select onChange={event => {
+                                        //console.log(event.target.value)
+                                        this.setState({selected_category: event.target.value})
+                                    }} className="form-control">
+                                        {this.state.categories}
+                                    </select>
+                                </th>
+                                {/* <th scope="col"><input ref={input => this.category = input} className="form-control" type="number" /></th> */}
+                                <th scope="col"><input ref={input => this.desc = input} className="form-control" type="text" /></th>
+                                <th scope="col"><input ref={input => this.price = input} className="form-control" type="number" /></th>
+                                <th scope="col"><input ref={input => this.quantity = input} className="form-control" type="number" /></th>
+                                {/* <th scope="col"><input ref={input => this.pict = input} className="form-control" type="text" /></th> */}
+                                <th className='custom-file'>
+                                    <input type='file' ref={input => {this.avatar = input}}/>
+                                </th>
+            
+                                <th scope="col"><button className="btn btn-outline-warning" onClick={this.onButtonClick}>Add</button></th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            )
+            }
+            return <Redirect to='/loginadmin'/>
+        }
+        
+}
 
-                        <th scope="col">ACTION</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {this.renderList()}
-                </tbody>
-            </table>
-            <h1 className="display-4 text-center">Search Product</h1>
-            <table className="table text-center">
-                <thead>
-                    <tr>
-                    {/* <th scope="col">ID</th> */}
-                        <th scope="col">NAME</th>
-                        <th scope="col">CATEGORY</th>
-                        <th scope="col">MIN</th>
-                        <th scope="col">MAX</th>
-                        <th scope="col">ACTION</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="col"><input ref={input => this.name = input} className="form-control" type="text" /></th>
-                        <th scope="col">
-                            {/* <input ref={input => this.category = input} className="form-control" type="text" /> */}
-                            <select onChange={event => {
-                                //console.log(event.target.value)
-                                this.setState({selected_category: event.target.value})
-                            }} className="form-control">
-                                {this.state.categories}
-                            </select>
-                        </th>
-                        <th scope="col"><input ref={input => this.min = input} className="form-control" type="number" /></th>
-                        <th scope="col"><input ref={input => this.max = input} className="form-control" type="number" /></th>
-    
-                        <th scope="col"><button className="btn btn-outline-warning" onClick={this.onBtnSearch}>Search</button></th>
-                    </tr>
-                </tbody>
-            </table>
-            <h1 className="display-4 text-center">Input Product</h1>
-            <table className="table text-center">
-                <thead>
-                    <tr>
-                    {/* <th scope="col">ID</th> */}
-                        <th scope="col">NAME</th>
-                        <th scope="col">CATEGORY</th>
-                        <th scope="col">DESC</th>
-                        <th scope="col">PRICE</th>
-                        <th scope="col">QUANTITY</th>
-                        <th scope="col">PICTURE</th>
-                        <th scope="col">ACTION</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="col"><input ref={input => this.nama = input} className="form-control" type="text" /></th>
-                        <th scope="col">
-                            {/* <input ref={input => this.category = input} className="form-control" type="text" /> */}
-                            <select onChange={event => {
-                                //console.log(event.target.value)
-                                this.setState({selected_category: event.target.value})
-                            }} className="form-control">
-                                {this.state.categories}
-                            </select>
-                        </th>
-                        {/* <th scope="col"><input ref={input => this.category = input} className="form-control" type="number" /></th> */}
-                        <th scope="col"><input ref={input => this.desc = input} className="form-control" type="text" /></th>
-                        <th scope="col"><input ref={input => this.price = input} className="form-control" type="number" /></th>
-                        <th scope="col"><input ref={input => this.quantity = input} className="form-control" type="number" /></th>
-                        {/* <th scope="col"><input ref={input => this.pict = input} className="form-control" type="text" /></th> */}
-                        <th className='custom-file'>
-                            <input type='file' ref={input => {this.avatar = input}}/>
-                        </th>
-    
-                        <th scope="col"><button className="btn btn-outline-warning" onClick={this.onButtonClick}>Add</button></th>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    )
+
+const mapStateToProps = state => {
+    return {
+        admin: state.admin // {id, username}
     }
 }
 
-export default ManageProduct
+export default connect(mapStateToProps)(ManageProduct)
+//export default ManageProduct

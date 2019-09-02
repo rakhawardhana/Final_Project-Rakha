@@ -112,15 +112,29 @@ class Cart extends Component {
         })
     }
 
+
     bayar = () => { 
         
+        // return this.state.products.map( item => { 
 
-        return this.state.products.map( item => { 
-            if(this.props.user.id === item.users_id){
-                axios.delete('http://localhost:2019/cart_product/'+item.product_id)
-            }
-            this.togglePay() 
+        //     if(this.props.user.id === item.users_id){
+        //         axios.delete('http://localhost:2019/cart_product/'+item.product_id)
+        //     }
+
+        //     this.togglePay() 
+        // })
+        return this.state.products.map(item => {
+
+           return (
+            <Redirect to= {'/checkout/' + item.cart_id}/>
+           ) 
+            //     <button className='btn btn-outline-primary btn-block'>Details</button>
+            // </Link> 
+            
+            //this.togglePay()
         })
+         
+
     }
 
     

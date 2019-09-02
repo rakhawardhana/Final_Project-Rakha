@@ -19,7 +19,7 @@ class ProductItem extends Component {
         // console.log(jumlah)
         
         // get cart untuk tau itu udah ada apa belum di cart
-
+        // get cart ini hanya nampilin cart_product dengan id cart yang belom verified atau dibuang
         if(quantity > 0 && id !== ""){
                 axios.get(
                     'http://localhost:2019/cart_product/' + product_id

@@ -13,7 +13,7 @@ const authAdminReducer = (data = init_admin,action)=>{
                 return{
                     id: action.payload.id,
                     username: action.payload.username,
-                    email: action.payload.email
+                    //email: action.payload.email
                 }
                 
                 
@@ -23,7 +23,7 @@ const authAdminReducer = (data = init_admin,action)=>{
                     ...data,
                     id:'',
                     username:'',
-                    email:''
+                    //email:''
                 }
                 
             default:
