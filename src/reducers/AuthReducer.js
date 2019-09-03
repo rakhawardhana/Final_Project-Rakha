@@ -20,7 +20,9 @@ export default (data = init, action) => {
         
         case "LOGOUT_SUCCESS":
                 return {
-                   init
+                ...data,
+                id: '',
+                name: ''
                 }
         
         

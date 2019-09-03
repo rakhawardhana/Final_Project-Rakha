@@ -60,22 +60,60 @@ class CheckoutAdmin extends Component {
         })
         
     }
-    
 
-    
+    // onDecline = (id) => {
 
-  
+    //     const admin_id = this.props.admin.id
+    //     const verified = 'no'
+    //     axios.patch(
+    //         '/checkout/decline/' + id, {
+    //             admin_id,
+    //             verified
+    //         }
+
+    //     ).then (res => {
+    //         console.log(res.data)
+    //         // value category_id nya berupa id, bukan category_product
+    //         axios.get('/checkout')
+    //         .then(res => {
+    //            this.setState({checkout: res.data})
+    //         })
+    //     })
+        
+    // }
+    
+    // dibikin fungsi edit patch false untuk decline
+    onDecline = (id) => {
+
+        const admin_id = this.props.admin.id
+        const verified = 'no'
+        axios.patch(
+            '/checkout/' + id, {
+                admin_id,
+                verified
+            }
+
+        ).then (res => {
+            console.log(res.data)
+            axios.get('/checkout')
+            .then(res => {
+               this.setState({checkout: res.data})
+            })
+        })
+        
+    }
+    
     renderList = () => {
        
         return this.state.checkout.map( item => { // {id, name, price, desc, src}
-            if (item.verified == "no") {
+            if (item.verified == null) {
                 return (
                     <tr key={item.id}>
                         <td>{item.id}</td>
                         <td>{item.name_product}{item.quantity}</td>
                         <td>{item.price_sum}</td>
                         <td>{item.quantity}</td>
-                        <td><img className='list' alt='' style={{width: 150, height: 150}} src={`http://localhost:2019/checkout/transfer_avatar/${item.transfer_avatar}`}/></td>
+                        <td><img className='list' alt='' style={{width: 100, height: 100}} src={`http://localhost:2019/checkout/transfer_avatar/${item.transfer_avatar}`}/></td>
                         <td>{item.created_at}</td>
                         <td>{item.updated_at}</td>
                         <td>
@@ -84,24 +122,45 @@ class CheckoutAdmin extends Component {
                                 }}>VERIFY</button>
                             {/* <button className = 'btn btn-warning' onClick={()=>{this.delete(item.id)}} >Delete </button> */}
                         </td>
+                        <td>
+                        <button className = 'btn btn-primary' onClick={() => {
+                                this.onDecline(item.id)
+                                }}>DECLINE</button>
+                            {/* <button className = 'btn btn-warning' onClick={()=>{this.delete(item.id)}} >Delete </button> */}
+                        </td>
                     </tr>
                     //onClick={() => {this.delete(item)}}
                     
                 )
+            } else if (item.verified == "yes") {
+                return (
+                    <tr key={item.id}>
+                        <td>{item.id}</td>
+                        <td>{item.name_product}{item.quantity}</td>
+                        <td>{item.price_sum}</td>
+                        <td>{item.quantity}</td>
+                        <td><img className='list' alt='' style={{width: 100, height: 100}} src={`http://localhost:2019/checkout/transfer_avatar/${item.transfer_avatar}`}/></td>
+                        <td>{item.created_at}</td>
+                        <td>{item.updated_at}</td>
+                        <td>Verified</td>
+                    </tr>
+                )
+    
+            } else {
+                return (
+                    <tr key={item.id}>
+                        <td>{item.id}</td>
+                        <td>{item.name_product}{item.quantity}</td>
+                        <td>{item.price_sum}</td>
+                        <td>{item.quantity}</td>
+                        <td><img className='list' alt='' style={{width: 100, height: 100}} src={`http://localhost:2019/checkout/transfer_avatar/${item.transfer_avatar}`}/></td>
+                        <td>{item.created_at}</td>
+                        <td>{item.updated_at}</td>
+                        <td>Declined</td>
+                    </tr>
+                )
             }
-            return (
-                <tr key={item.id}>
-                    <td>{item.id}</td>
-                    <td>{item.name_product}{item.quantity}</td>
-                    <td>{item.price_sum}</td>
-                    <td>{item.quantity}</td>
-                    <td><img className='list' alt='' style={{width: 150, height: 150}} src={`http://localhost:2019/checkout/transfer_avatar/:${item.transfer_avatar}`}/></td>
-                    <td>{item.created_at}</td>
-                    <td>{item.updated_at}</td>
-                    <td>Verified</td>
-                </tr>
-            )
-
+            
             
         })
     }

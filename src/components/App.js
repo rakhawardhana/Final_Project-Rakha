@@ -3,7 +3,7 @@ import { BrowserRouter, Route } from 'react-router-dom'
 //import { BrowserRouter, Route } from 'react-router-dom'
 import cookies from 'universal-cookie'
 import {connect} from 'react-redux'
-import {keepLogin} from '../actions'
+import {keepLogin, onAdminLogout} from '../actions'
 import {keepLogin_admin} from '../actions'
 import LoginAdmin from './LoginAdmin'
 import Home from './Home'
@@ -20,6 +20,7 @@ import EditProfile from './EditProfile'
 import Cart from './Cart'
 import Checkout from './Checkout'
 import CheckoutAdmin from './CheckoutAdmin'
+import HeaderAdmin from './HeaderAdmin'
 
 //const cookie = new cookies()
 const cookie = new cookies()
@@ -58,7 +59,7 @@ class App extends Component {
                      <Route path='/cart' component={Cart}/>
                      <Route path='/checkout' component={Checkout}/>
                      <Route path='/checkoutadmin' component={CheckoutAdmin}/>
-                  {/* <Footer/> */}
+                  <HeaderAdmin/>
                 </div>
 
 

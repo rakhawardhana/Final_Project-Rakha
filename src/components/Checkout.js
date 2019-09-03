@@ -51,21 +51,66 @@ class Checkout extends Component {
         })
         
     }
-    
+
+    // bikin fungsi untuk add cart baru
+
+
     list = () => {
         const cart_id = this.state.id
-        axios.get('/checkout/' + cart_id)
+        console.log(cart_id)
+        axios.get('/checkout/accept/' + cart_id)
             .then(res => {
                 console.log(res.data)
-                if(res.data.verified == "yes")  {
-                    alert("TRANSFER ANDA TELAH TERVERIFIKASI, TERIMA KASIH")
+                if(res.data.verified == "yes") {
+                    alert("Selamat, transaksi berhasil")
                     console.log(res.data.verified)
+                } else if (res.data.verified == null)
+                    {
+                    // axios.get('/checkout/checkno/' + cart_id)
+                    // .then(res => {
+                    //     console.log(res.data)
+                    //         if(res.data) {
+                    //             alert("MOHON UPLOAD ULANG")
+                    //         } else {
+                    //             // alert("UPLOAD bukti transaksi anda ditolak, mohon upload ulang!")
+                    //             axios.get('/checkout/checknull/' + cart_id)
+                    //             .then(res => {
+                    //                 if(res.data) {
+                    //                     alert("MOHON TUNGGU")
+                    //                 }
+                    //             })
+                    //         }
+                    //     })
+                        alert("mohon tunggu")
+                } else {
+                    alert("upload ulang")
                 }
-                alert("MOHON MENUNGGU")
+                
+                // if(res.data.verified == "yes")  {
+                    
+                // } else if(res.data.verified == "no") {
+                //     alert("TRANSAKSI ANDA DITOLAK, MOHON UPLOAD ULANG")
+                // }
+                
             })
-
     }
    
+    makeNewCart = () => {
+        const cart_id = this.state.id
+        const users_id = this.props.user.id
+        axios.patch('/cart/' + cart_id, {
+            users_id
+            }
+        ).then(res =>
+             {
+                alert('CART BARU TELAH DIBUAT, SILAHKAN KE HALAMAN CART')
+            }
+        ).catch(err => 
+            {
+                alert('gagal bikin cart baru')
+            }
+        )
+    }
 
     render() {
         if(this.state.id){
@@ -91,6 +136,7 @@ class Checkout extends Component {
                         >UPLOAD UNTUK VERIFIKASI</button>
 
                          <button className = 'btn btn-danger m-1' onClick={this.list}>LIHAT VERIFIKASI</button>
+                         <button className = 'btn btn-danger m-1' onClick={this.makeNewCart}>ADD NEW CART</button>
                     </div>
             )
         }

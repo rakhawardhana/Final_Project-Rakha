@@ -59,6 +59,7 @@ class ManageProduct extends Component {
             })
     }
     
+    
     onButtonClick = () => {
 
         const formData = new FormData()
@@ -98,7 +99,10 @@ class ManageProduct extends Component {
     delete = (i) => {
 
         axios.delete('/products/' + i)
-        .then(res =>  {this.getProduct()})
+        .then(res =>  
+            this.getProduct(),
+            console.log(i)
+            )
         
     }
 
@@ -153,7 +157,7 @@ class ManageProduct extends Component {
             // tinggal ditambahin kategori sama min
             //tinggal ditambahin kategori sama max
             // tinggal ditambahin min dan max
-            if(isNaN(min) && isNaN(max) && !category_product) { // search by name
+            if(isNaN(min) && isNaN(max) && category_product == null) { // search by name
                 return (item.name_product.toLowerCase().includes(name.toLowerCase()))
             }
             else if(isNaN(min) && isNaN(max)){ // Search by Name and category
@@ -178,7 +182,16 @@ class ManageProduct extends Component {
                     &&
                     item.category_id == category_product
                 )
-            } else {            // Name & Min & Max & category
+            } else if (!name && isNaN(max) && category_product == null) { // search by min
+                return (
+                    item.price >= min
+                )
+            } else if (!name && isNaN(min) && category_product == null) { // search by max
+                return (
+                    item.price <= max
+                )
+            }
+                else {            // Name & Min & Max & category
                 return (
                     // Semua string itu mengandung string kosong (true)
                     item.name_product.toLowerCase().includes(name.toLowerCase())
@@ -202,7 +215,7 @@ class ManageProduct extends Component {
             return (
                 
                 <tr key={item.id}>
-                    <td>{item.id}</td>
+                    {/* <td>{item.id}</td> */}
                     <td>{item.name_product}</td>
                     <td>{item.category_product}</td>
                     <td>{item.description}</td>
@@ -215,7 +228,7 @@ class ManageProduct extends Component {
                     <td>
                         <button className = 'btn btn-primary' onClick={() => {
                             this.toggle()
-                            // untuk nembak ke value id untuk togglenya
+                            // untuk nembak ke value id untuk toggle id tertentu
                             this.setState({id: item.id})
                             }}>Edit</button>
                         <button className = 'btn btn-warning' onClick={()=>{this.delete(item.id)}} >Delete </button>
@@ -238,20 +251,25 @@ class ManageProduct extends Component {
                             <div>
                             <input className='form-control' type='hidden' value = {this.state.id}
                                     ref={input => {this.id = input}}/>
-                            <input className='form-control' type='text' 
+                            {/* <label htmlFor="name">Name</label> */}
+                            NAME_PRODUCT
+                            <input className='form-control' type='text'  
+                                    
                                     ref={input => {this.nama = input}}
                                     onChange={event => {
                                         this.setState({nama: event.target.value})
                                                 // console.log(e.target.files)
                                             }}
                                     
-                                    />
+                                    /> 
+                            KATEGORI
                             <select onChange={event => {
                                         //console.log(event.target.value)
                                         this.setState({selected_category: event.target.value})
                                     }} className="form-control">
                                         {this.state.categories}
                             </select>
+                            DESCRIPTION
                             <input className='form-control' type='text' 
                                     ref={input => {this.desc = input}}
                                     onChange={event => {
@@ -259,6 +277,7 @@ class ManageProduct extends Component {
                                                 // console.log(e.target.files)
                                             }}
                                     />
+                            PRICE
                             <input className='form-control' type='number' 
                                     ref={input => {this.price = input}}
                                     onChange={event => {
@@ -266,6 +285,7 @@ class ManageProduct extends Component {
                                                 // console.log(e.target.files)
                                             }}
                                     />
+                            QUANTITY
                             <input className='form-control' type='number'
                                     ref={input => {this.quantity = input}}
                                     onChange={event => {
@@ -273,6 +293,7 @@ class ManageProduct extends Component {
                                                 // console.log(e.target.files)
                                             }}
                                     />
+                            PHOTO
                             <input type='file' ref={input => {this.avatar = input}}  onChange={event => {
                                 this.setState({avatar: event.target.files[0]})
                                         // console.log(e.target.files)
@@ -292,7 +313,7 @@ class ManageProduct extends Component {
                     <table className="table table-hover mb-5">
                         <thead>
                             <tr>
-                                <th scope="col">ID</th>
+                                {/* <th scope="col">ID</th> */}
                                 <th scope="col">NAME</th>
                                 <th scope="col">CATEGORY</th>
                                 <th scope="col">DESC</th>
@@ -324,7 +345,7 @@ class ManageProduct extends Component {
                                 <th scope="col"><input ref={input => this.name = input} className="form-control" type="text" /></th>
                                 <th scope="col">
                                     {/* <input ref={input => this.category = input} className="form-control" type="text" /> */}
-                                    <select onChange={event => {
+                                    <select onChange={event => { 
                                         //console.log(event.target.value)
                                         this.setState({selected_category: event.target.value})
                                     }} className="form-control">

@@ -30,12 +30,13 @@ class Item extends Component {
         console.log(min)
         console.log(max)
         console.log(category_product)
+        //console.log(!name)
         var arrSearch = this.state.searchProducts.filter(item => {
             // tinggal ditambahin name min and max tanpa kategori
             // tinggal ditambahin kategori sama min
             //tinggal ditambahin kategori sama max
             // tinggal ditambahin min dan max
-            if(isNaN(min) && isNaN(max)){ // Search by Name
+            if(isNaN(min) && isNaN(max)){ // Search by Name 
                 return (
                     item.name_product.toLowerCase().includes(name.toLowerCase()) &&  item.category_product == category_product
                 )
@@ -120,6 +121,7 @@ class Item extends Component {
                                     <h4>CATEGORY</h4>
                                 </div>
                                 <select ref={input => this.category_product = input} className="custom-select" id="inputGroupSelect01">
+                                    <option value=""></option>
                                     <option value="Automatic">Automatic</option>
                                     <option value="Manual">Manual</option>
                                     <option value="Grinder">Grinder</option>

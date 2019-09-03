@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
+
 import { connect } from 'react-redux'
 import axios from 'axios';
 
@@ -7,6 +8,10 @@ import axios from 'axios';
 class ProductItem extends Component {
 
     //const id itu dari id user dari redux, buat patokan table cart
+   
+
+    
+
 
     addToCart = () => {
         var quantity = Number.parseInt(this.quantity.value)
@@ -66,7 +71,10 @@ class ProductItem extends Component {
                 })    
         } else {
             if(id === ""){ 
+               
                 alert('LOGIN PLEASE!!')
+                //return <Redirect to='/login'/>
+                
                 // nanti disini render buat pindah halaman
             } else{ 
                 alert('ISI DULU JUMLAHNYA')

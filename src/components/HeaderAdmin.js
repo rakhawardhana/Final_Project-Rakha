@@ -1,37 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux'
-import { logoutUser } from '../actions'
+import { onAdminLogout } from '../actions'
 
-
-
-
-// class Header extends Component {
-// 	render() {
-// 		return (
-// 			<header>
-// 				<nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-// 					<div className="container">
-// 						<Link className="navbar-brand" to="/">
-// 							COFFEE EX MACHINE
-// 						</Link>
-
-// 						<ul className="navbar-nav mr-auto">
-// 							<li className="nav-item active">
-// 								<Link className="nav-link"  to="./Aboutus">
-// 									SIAPA KITA?
-// 									<span className="sr-only" />
-// 								</Link>
-// 							</li>
-// 						</ul>
-// 					</div>
-// 				</nav>
-// 			</header>
-// 		);
-// 	}
-// }
-
-// export default Header;
 
 import {
     Button,
@@ -48,7 +19,7 @@ import {
     DropdownItem } from 'reactstrap';
 
 
-class Header extends Component {
+class HeaderAdmin extends Component {
     constructor(props) {
         super(props);
     
@@ -68,31 +39,28 @@ class Header extends Component {
 
     onButtonClick = () => {
         // menghapus username dari redux state
-        this.props.logoutUser()
+        this.props.onAdminLogout()
     }
 
     
 
     render () {
 
-         if(this.props.user.name === ''){
+         if(this.props.admin.username === ''){
         // Render ketika belum login
             return (
                 <div>
                     <Navbar color="black" light expand="md">
-                    <NavbarBrand href="/">COFFEE EX MACHINE</NavbarBrand>
-					<NavbarBrand href="./Aboutus">SIAPA KITA?</NavbarBrand>
+                    {/* <NavbarBrand href="/">COFFEE EX MACHINE</NavbarBrand>
+					<NavbarBrand href="./Aboutus">SIAPA KITA?</NavbarBrand> */}
                     <NavbarToggler onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar >
                         <NavItem>
-                            <Link to='./item' >All Products</Link>
+                            <Link to='/manageproduct' >POWERED BY @</Link>
                         </NavItem>
-                        <NavItem>
-                            <Link to='/register'>
-                                <Button color="primary" className="mx-3">Register</Button>
-                            </Link>
-                        </NavItem>
+                        </Nav>
+                        <Nav className= "ml-auto" navbar>
                         <NavItem>
                             <Link to='/login' >
                                 <Button color="success">Login</Button>
@@ -108,13 +76,13 @@ class Header extends Component {
         return (
             <div>
                 <Navbar color="light" light expand="md">
-                    <NavbarBrand href="/">COFFEE EX MACHINE</NavbarBrand>
-					<NavbarBrand href="./Aboutus">SIAPA KITA?</NavbarBrand>
+                    {/* <NavbarBrand href="/">COFFEE EX MACHINE</NavbarBrand>
+					<NavbarBrand href="./Aboutus">SIAPA KITA?</NavbarBrand> */}
                 <NavbarToggler onClick={this.toggle} />
                 <Collapse isOpen={this.state.isOpen} navbar>
                     <Nav className="ml-auto" navbar>
                     <NavItem className='mt-2'>
-                        <Link to='./item' >All Products</Link>
+                        <Link to='/manageproduct' >POWERED BY @</Link>
                     </NavItem>
                     {/* <NavItem className='mt-2 ml-auto'>
                         <Link to='/checkout' >
@@ -125,11 +93,11 @@ class Header extends Component {
                     </NavItem> */}
                     <UncontrolledDropdown nav inNavbar>
                     <DropdownToggle nav caret>
-                    Hallo, {this.props.user.username}
+                    Hallo, {this.props.admin.username}
                     </DropdownToggle>
                     <DropdownMenu right>
                         <DropdownItem>
-                        <Link to='/cart' >Cart</Link>
+                        <Link to='/checkoutadmin' >VERIFIKASI TRANSAKSI</Link>
                         </DropdownItem>
                         <DropdownItem divider />
                         <Link to='/login' >
@@ -152,8 +120,8 @@ class Header extends Component {
 
 const mapStateToProps = state => {
     return {
-        user: state.auth // {id, username}
+        admin: state.admin // {id, username}
     }
 }
 
-export default connect(mapStateToProps, {logoutUser})(Header)
+export default connect(mapStateToProps, {onAdminLogout})(HeaderAdmin)
