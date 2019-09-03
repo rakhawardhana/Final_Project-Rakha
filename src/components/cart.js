@@ -126,7 +126,7 @@ class Cart extends Component {
         return this.state.products.map(item => {
 
            return (
-            <Redirect to= {'/checkout/' + item.cart_id}/>
+            <Redirect to= {'/checkout'}/>
            ) 
             //     <button className='btn btn-outline-primary btn-block'>Details</button>
             // </Link> 
@@ -164,31 +164,10 @@ class Cart extends Component {
                             
                         )
                     
-                }else {
-                    if(this.props.user.id === item.idUsername){
-                        return (
-                            <tr key={item.id}>
-                                <td>{item.nama}</td>
-                                <td>{item.deskripsi}</td>
-                                <td>{item.price}</td>
-                                <td>
-                                <input className="form-control" ref={input => {this.editQty = input}} type="text" defaultValue={item.jumlah}/>
-                                </td>
-                                <td>{item.price*item.jumlah}</td>
-                                <td><img className='list' alt='' style={{width: 150, height: 30}} src={`http://localhost:2019/products/avatar/${item.avatar}`}/></td>
-                                <td>            
-                                <button className = 'btn btn-danger m-1' onClick={()=>{this.saveProduct(item)}}>Save</button>
-                                <button className = 'btn btn-warning m-1' onClick={()=>{this.setState({selectedID : 0})}}>Cancel</button>
-                                </td>
-                                {/* <button className = 'btn btn-danger m-1' onClick={()=>{this.toggle()}}>CheckOut</button> */}
-                            </tr>
-                            
-                        )
-                    }
                 }
             })
         }
-        // return <Redirect to='/login'/>
+        
         }
 
 

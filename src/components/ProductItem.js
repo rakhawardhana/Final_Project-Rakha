@@ -67,6 +67,7 @@ class ProductItem extends Component {
         } else {
             if(id === ""){ 
                 alert('LOGIN PLEASE!!')
+                // nanti disini render buat pindah halaman
             } else{ 
                 alert('ISI DULU JUMLAHNYA')
             }

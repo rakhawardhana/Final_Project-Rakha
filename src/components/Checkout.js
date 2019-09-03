@@ -9,15 +9,18 @@ import axios from '../config/axios';
 
 class Checkout extends Component {
 
-    // state = {
-    //     product: {
-    //         id: '',
-    //         name: '',
-    //         price: '',
-    //         avatar: ''
-    //     }
-    // }
+    state = {
+        id: null
+    }
 
+     componentDidMount() {
+        // Get cart_id
+        axios.get('/cart/user/' + this.props.user.id)
+            .then(res => {
+                this.setState({id: res.data});
+                console.log(res.data)
+            })
+    }
 
     onButtonClick = () => {
         //let cart_id = this.props.match.params.id
@@ -41,24 +44,28 @@ class Checkout extends Component {
             formData
         ).then (res => {
             console.log(res.data)
+            alert('Menunggu untuk di setujui, klik dashboard verified untuk melihat')
+            // entar disini pindah halaman
         })
         
     }
     
-    // componentDidMount() {
-    //     // Get Profile
-    //     axios.get('/users/' + this.props.userid)
-    //         .then(res => {
-    //             this.setState({data: res.data});
-                
-    //         })
-    // }
+    list = () => {
+        const cart_id = this.state.id
+        axios.get('/checkout/' + cart_id)
+            .then(res => {
+                console.log(res.data)
+                if(res.data.verified == "yes")  {
+                    alert("TRANSFER ANDA TELAH TERVERIFIKASI, TERIMA KASIH")
+                }
+                alert("MOHON MENUNGGU")
+            })
 
-
-
+    }
+   
 
     render() {
-        if(this.props.match.params.id){
+        if(this.state.id){
             
             return (
                     <div className='container'>
@@ -79,6 +86,7 @@ class Checkout extends Component {
                             className='btn btn-primary'
                             onClick={this.onButtonClick}
                         >UPLOAD UNTUK VERIFIKASI</button>
+                         <button className = 'btn btn-danger m-1' onClick={this.list}>LIHAT VERIFIKASI</button>
                     </div>
             )
         }

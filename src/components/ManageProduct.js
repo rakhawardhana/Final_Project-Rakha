@@ -215,6 +215,7 @@ class ManageProduct extends Component {
                     <td>
                         <button className = 'btn btn-primary' onClick={() => {
                             this.toggle()
+                            // untuk nembak ke value id untuk togglenya
                             this.setState({id: item.id})
                             }}>Edit</button>
                         <button className = 'btn btn-warning' onClick={()=>{this.delete(item.id)}} >Delete </button>

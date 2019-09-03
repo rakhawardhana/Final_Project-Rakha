@@ -19,6 +19,7 @@ import Profile from './Profile'
 import EditProfile from './EditProfile'
 import Cart from './Cart'
 import Checkout from './Checkout'
+import CheckoutAdmin from './CheckoutAdmin'
 
 //const cookie = new cookies()
 const cookie = new cookies()
@@ -55,7 +56,8 @@ class App extends Component {
                      <Route path='/profile' component={Profile}/>
                      <Route path='/editprofile' component={EditProfile}/>
                      <Route path='/cart' component={Cart}/>
-                     <Route path='/checkout/:id' component={Checkout}/>
+                     <Route path='/checkout' component={Checkout}/>
+                     <Route path='/checkoutadmin' component={CheckoutAdmin}/>
                   {/* <Footer/> */}
                 </div>
 

@@ -2,94 +2,61 @@ import React, { Component } from 'react'
 import axios from '../config/axios'
 import { connect } from 'react-redux'
 import {Redirect} from 'react-router-dom'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+//import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 
+// get checkout and products, 
+// patch 
 
 class CheckoutAdmin extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-          products: [],
-          modal: false,
-          id: null,
-          categories: [], 
-          selected_category: null, // berisi id category
-          searchProducts: [],
-          // buat edit
-          avatar: null,
-          nama: null, 
-          desc: null, 
-          price: null,
-          quantity: null
+          checkout: []
         };
     
-        this.toggle = this.toggle.bind(this);
+        
     }
 
     
-    toggle() {
-        this.setState(prevState => ({
-          modal: !prevState.modal
-        }));
-    }
 
     componentDidMount(){
-        
-
         // kan dia setState ke products, nah products itu isinya res.data yang merupakan array of object. 
 
-        axios.get('/products')
+        axios.get('/checkout')
             .then(res => {
-               this.setState({products: res.data, searchProducts: res.data })
+               this.setState({checkout: res.data})
             })
 
-        // di state ditambah array baru, array kategori buat nampilin kategori di rendernya. 
-        axios.get('/categories/')
-            .then((res) =>{
-                this.setState({categories: res.data.map(c => <option value={c.id}>{c.category_product}</option>)})
-            })
     }
 
-    getProduct = () => {
-        axios.get('/products')
+    getCheckout = () => {
+        axios.get('/checkout')
             .then(res => {
-               this.setState({products: res.data})
+               this.setState({checkout: res.data})
             })
     }
     
-    onButtonClick = () => {
+    
+    
+    onButtonClick = (id) => {
 
-        const formData = new FormData()
-        
-        const avatar = this.avatar.files[0]
-        const data_name = this.nama.value
-        const data_category = this.state.selected_category
-        const data_description = this.desc.value
-        const data_price = this.price.value
-        const data_quantity = this.quantity.value
-    
-        // field
-        formData.append('avatar', avatar)
-        formData.append('name_product', data_name)
-        formData.append('category_id', data_category)
-        formData.append('description', data_description)
-        formData.append('price', data_price)
-        formData.append('quantity', data_quantity)
-    
-        axios.post(
-            '/products',
-            formData,
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                },
-                
+        const admin_id = this.props.admin.id
+        const verified = 'yes'
+        axios.patch(
+            '/checkout/' + id, {
+                admin_id,
+                verified
             }
+
         ).then (res => {
             console.log(res.data)
             // value category_id nya berupa id, bukan category_product
+            axios.get('/checkout')
+            .then(res => {
+               this.setState({checkout: res.data})
+            })
         })
         
     }
@@ -100,47 +67,61 @@ class CheckoutAdmin extends Component {
   
     renderList = () => {
        
-        return this.state.products.map( item => { // {id, name, price, desc, src}
+        return this.state.checkout.map( item => { // {id, name, price, desc, src}
+            if (item.verified == "no") {
+                return (
+                    <tr key={item.id}>
+                        <td>{item.id}</td>
+                        <td>{item.name_product}{item.quantity}</td>
+                        <td>{item.price_sum}</td>
+                        <td>{item.quantity}</td>
+                        <td><img className='list' alt='' style={{width: 150, height: 150}} src={`http://localhost:2019/checkout/transfer_avatar/${item.transfer_avatar}`}/></td>
+                        <td>{item.created_at}</td>
+                        <td>{item.updated_at}</td>
+                        <td>
+                            <button className = 'btn btn-primary' onClick={() => {
+                                this.onButtonClick(item.id)
+                                }}>VERIFY</button>
+                            {/* <button className = 'btn btn-warning' onClick={()=>{this.delete(item.id)}} >Delete </button> */}
+                        </td>
+                    </tr>
+                    //onClick={() => {this.delete(item)}}
+                    
+                )
+            }
             return (
-                
                 <tr key={item.id}>
                     <td>{item.id}</td>
-                    <td>{item.name_product}</td>
-                    <td>{item.category_product}</td>
-                    <td>{item.description}</td>
-                    <td>{item.price}</td>
+                    <td>{item.name_product}{item.quantity}</td>
+                    <td>{item.price_sum}</td>
                     <td>{item.quantity}</td>
-                    <td><img className='list' alt='' style={{width: 150, height: 150}} src={`http://localhost:2019/products/avatar/${item.avatar}`}/></td>
-                    {/* <td>
-                        <img className='list' src={item.src}/>
-                    </td> */}
-                    <td>
-                        <button className = 'btn btn-primary' onClick={() => {
-                            this.toggle()
-                            this.setState({id: item.id})
-                            }}>Edit</button>
-                        <button className = 'btn btn-warning' onClick={()=>{this.delete(item.id)}} >Delete </button>
-                    </td>
+                    <td><img className='list' alt='' style={{width: 150, height: 150}} src={`http://localhost:2019/checkout/transfer_avatar/:${item.transfer_avatar}`}/></td>
+                    <td>{item.created_at}</td>
+                    <td>{item.updated_at}</td>
+                    <td>Verified</td>
                 </tr>
-                //onClick={() => {this.delete(item)}}
-                
             )
+
+            
         })
     }
+
+    // id, name_product, quantity, price sum, avatar, tanggal transaksi, tanggal verified
     render () {
         if (this.props.admin.id) {
             return (
                 <div className="container">
-                    <h1 className="display-4 text-center">THIS TRANSACTION NEED TO BE VERIFIED</h1>
+                    <h1 className="display-4 text-center">ALL TRANSACTION</h1>
                     <table className="table table-hover mb-5">
                         <thead>
                             <tr>
-                                {/* <th scope="col">ID</th>
+                                <th scope="col">ID</th> 
                                 <th scope="col">NAME</th>
-                                <th scope="col">CATEGORY</th>
-                                <th scope="col">DESC</th> */}
                                 <th scope="col">PRICE_SUM</th>
+                                <th scope="col">QUANTITY</th>
                                 <th scope="col">TRANSFER AVATAR</th>
+                                <th scope="col">TANGGAL TRANSAKSI</th>
+                                <th scope="col">DIUPDATE TANGGAL</th>
                                 {/* <th scope="col">PICTURE</th> */}
         
                                 <th scope="col">ACTION</th>
