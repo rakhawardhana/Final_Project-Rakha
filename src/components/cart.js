@@ -123,16 +123,14 @@ class Cart extends Component {
 
         //     this.togglePay() 
         // })
-        return this.state.products.map(item => {
-
-           return (
-            <Redirect to= {'/checkout'}/>
-           ) 
+            return <Redirect to= {'/checkout'}/>
+            
+           
             //     <button className='btn btn-outline-primary btn-block'>Details</button>
             // </Link> 
             
             //this.togglePay()
-        })
+        
          
 
     }
@@ -223,7 +221,13 @@ class Cart extends Component {
                         </table>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={()=>{this.bayar()}}>Bayar</Button>{' '}
+                        <Link   to={'/checkout'} >
+                                <Button color="primary" 
+                                        // onClick={()=>{this.bayar()}}
+                                    >Bayar
+                                </Button>
+                        </Link>
+                        
                         <Button color="secondary" onClick={this.toggle}>Cancel</Button>
                     </ModalFooter>
                     </Modal>

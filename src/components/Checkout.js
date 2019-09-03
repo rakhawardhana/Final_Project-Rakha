@@ -17,8 +17,8 @@ class Checkout extends Component {
         // Get cart_id
         axios.get('/cart/user/' + this.props.user.id)
             .then(res => {
-                this.setState({id: res.data});
-                console.log(res.data)
+                this.setState({id: res.data.cart_id});
+                console.log(res.data.cart_id)
             })
     }
 
@@ -28,7 +28,7 @@ class Checkout extends Component {
     
         const transfer_avatar = this.transfer_avatar.files[0]
         const price_sum = this.price_sum.value
-        const cart_id = this.props.match.params.id
+        const cart_id = this.state.id
         const users_id = this.props.user.id
         
     
@@ -46,6 +46,8 @@ class Checkout extends Component {
             console.log(res.data)
             alert('Menunggu untuk di setujui, klik dashboard verified untuk melihat')
             // entar disini pindah halaman
+        }).catch (res => {
+            alert('gagal')
         })
         
     }
@@ -57,6 +59,7 @@ class Checkout extends Component {
                 console.log(res.data)
                 if(res.data.verified == "yes")  {
                     alert("TRANSFER ANDA TELAH TERVERIFIKASI, TERIMA KASIH")
+                    console.log(res.data.verified)
                 }
                 alert("MOHON MENUNGGU")
             })
@@ -86,6 +89,7 @@ class Checkout extends Component {
                             className='btn btn-primary'
                             onClick={this.onButtonClick}
                         >UPLOAD UNTUK VERIFIKASI</button>
+
                          <button className = 'btn btn-danger m-1' onClick={this.list}>LIHAT VERIFIKASI</button>
                     </div>
             )
