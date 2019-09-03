@@ -104,8 +104,8 @@ class CheckoutAdmin extends Component {
     }
     
     renderList = () => {
-       
-        return this.state.checkout.map( item => { // {id, name, price, desc, src}
+    
+        return this.state.checkout.map( item  => { // {id, name, price, desc, src}
             if (item.verified == null) {
                 return (
                     <tr key={item.id}>

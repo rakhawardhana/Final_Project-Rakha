@@ -31,14 +31,17 @@ class ProductItem extends Component {
                 ).then( res => {
                     var newQuantity = res.data.quantity 
                     console.log(newQuantity)
+                    console.log(newQuantity + quantity)
                     //console.log(res.data.length)
                     if(res.data) 
+                    
                 // kalau udah ada, jadinya nge get cart buat dapetin quantity lama buat di jumlahkan sama quantity baru
                 // nanti di back end udah ada logicnya, menentukan jumlah quantity itu lebih besar ga dari product.quantity 
                     {
                         // axios.get('http://localhost:2019/cart_product/' + product_id).then(res => {
                             axios.patch('http://localhost:2019/cart_product/' + product_id, {
                                 quantity: newQuantity + quantity
+                                
                             }).then(res => {
                                 alert('QUANTITY DITAMBAHKAN')
                             }).catch(error => {

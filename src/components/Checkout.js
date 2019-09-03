@@ -46,8 +46,9 @@ class Checkout extends Component {
             console.log(res.data)
             alert('Menunggu untuk di setujui, klik dashboard verified untuk melihat')
             // entar disini pindah halaman
-        }).catch (res => {
+        }).catch (err => {
             alert('gagal')
+            // 400 500 
         })
         
     }

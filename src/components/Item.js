@@ -31,52 +31,66 @@ class Item extends Component {
         console.log(max)
         console.log(category_product)
         //console.log(!name)
-        var arrSearch = this.state.searchProducts.filter(item => {
-            // tinggal ditambahin name min and max tanpa kategori
-            // tinggal ditambahin kategori sama min
-            //tinggal ditambahin kategori sama max
-            // tinggal ditambahin min dan max
-            if(isNaN(min) && isNaN(max)){ // Search by Name 
-                return (
-                    item.name_product.toLowerCase().includes(name.toLowerCase()) &&  item.category_product == category_product
-                )
-            //  if(item.name_product.toLowerCase().includes(name)) {
-            //     item.name_product.toLowerCase().includes(name)
-            // } else if (name === '') {
-            //     return true
-             } else if (item.category_product) { //search by category
-                return (
-                    item.category_product == category_product)
-             } else if (isNaN(min)) { // search by name and max and category
-                return (item.name_product.toLowerCase().includes(name.toLowerCase())
-                    &&
-                    item.price <= max)
-                    &&
-                    item.category_product == category_product
-             } 
-             else if(isNaN(max)){ // search by Name and Min & category
-                return (
-                    item.name_product.toLowerCase().includes(name.toLowerCase())
-                    &&
-                    item.price >= min
-                    &&
-                    item.category_product == category_product
-                )
-            } else {            // Name & Min & Max & category
-                return (
-                    // Semua string itu mengandung string kosong (true)
-                    item.name_product.toLowerCase().includes(name.toLowerCase())
-                    &&
-                    item.price >= min
-                    &&
-                    item.price <= max
-                    &&
-                    item.category_product == category_product
-                )
-            }
-        })
+        let result = this.state.searchProducts
+        if (name.length > 0) {
+            console.log("name " + name)
+            result = result.filter(item => item.name_product.toLowerCase().includes(name.toLowerCase()))
+        }
+        if (category_product.length > 0) {
+            result = result.filter(item => item.category_id == category_product)
+        }
+        if (!isNaN(min)) {
+            result = result.filter(item => item.price >= min)
+        }
+        if (!isNaN(max)) {
+            result = result.filter(item => item.price <= max)
+        }
+        // var arrSearch = this.state.searchProducts.filter(item => {
+        //     // tinggal ditambahin name min and max tanpa kategori
+        //     // tinggal ditambahin kategori sama min
+        //     //tinggal ditambahin kategori sama max
+        //     // tinggal ditambahin min dan max
+        //     if(isNaN(min) && isNaN(max)){ // Search by Name 
+        //         return (
+        //             item.name_product.toLowerCase().includes(name.toLowerCase()) &&  item.category_product == category_product
+        //         )
+        //     //  if(item.name_product.toLowerCase().includes(name)) {
+        //     //     item.name_product.toLowerCase().includes(name)
+        //     // } else if (name === '') {
+        //     //     return true
+        //      } else if (item.category_product) { //search by category
+        //         return (
+        //             item.category_product == category_product)
+        //      } else if (isNaN(min)) { // search by name and max and category
+        //         return (item.name_product.toLowerCase().includes(name.toLowerCase())
+        //             &&
+        //             item.price <= max)
+        //             &&
+        //             item.category_product == category_product
+        //      } 
+        //      else if(isNaN(max)){ // search by Name and Min & category
+        //         return (
+        //             item.name_product.toLowerCase().includes(name.toLowerCase())
+        //             &&
+        //             item.price >= min
+        //             &&
+        //             item.category_product == category_product
+        //         )
+        //     } else {            // Name & Min & Max & category
+        //         return (
+        //             // Semua string itu mengandung string kosong (true)
+        //             item.name_product.toLowerCase().includes(name.toLowerCase())
+        //             &&
+        //             item.price >= min
+        //             &&
+        //             item.price <= max
+        //             &&
+        //             item.category_product == category_product
+        //         )
+        //     }
+        // })
 
-        this.setState({products: arrSearch})
+        this.setState({products: result})
 
     }
 

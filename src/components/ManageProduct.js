@@ -39,7 +39,6 @@ class ManageProduct extends Component {
         
 
         // kan dia setState ke products, nah products itu isinya res.data yang merupakan array of object. 
-
         axios.get('/products')
             .then(res => {
                this.setState({products: res.data, searchProducts: res.data })
@@ -49,6 +48,7 @@ class ManageProduct extends Component {
         axios.get('/categories/')
             .then((res) =>{
                 this.setState({categories: res.data.map(c => <option value={c.id}>{c.category_product}</option>)})
+                if (res.data[0]) this.setState({selected_category: res.data[0].id})
             })
     }
 
@@ -151,61 +151,74 @@ class ManageProduct extends Component {
         console.log(max)
         console.log(category_product)
         console.log(this.state.searchProducts)
-        var arrSearch = this.state.searchProducts.filter(item => {
-            // console.log(item.category_product)
-            // tinggal ditambahin name min and max tanpa kategori
-            // tinggal ditambahin kategori sama min
-            //tinggal ditambahin kategori sama max
-            // tinggal ditambahin min dan max
-            if(isNaN(min) && isNaN(max) && category_product == null) { // search by name
-                return (item.name_product.toLowerCase().includes(name.toLowerCase()))
-            }
-            else if(isNaN(min) && isNaN(max)){ // Search by Name and category
-                return (
-                    item.name_product.toLowerCase().includes(name.toLowerCase()) &&  item.category_id == category_product
-                )
-             } else if (!name && isNaN(min) && isNaN(max)) { //search by category
-                return (
-                    item.category_id == category_product)
-             } else if (isNaN(min)) { // search by name and max and category
-                return (item.name_product.toLowerCase().includes(name.toLowerCase())
-                    &&
-                    item.price <= max)
-                    &&
-                    item.category_id == category_product
-             } 
-             else if(isNaN(max)){ // search by Name and Min & category
-                return (
-                    item.name_product.toLowerCase().includes(name.toLowerCase())
-                    &&
-                    item.price >= min
-                    &&
-                    item.category_id == category_product
-                )
-            } else if (!name && isNaN(max) && category_product == null) { // search by min
-                return (
-                    item.price >= min
-                )
-            } else if (!name && isNaN(min) && category_product == null) { // search by max
-                return (
-                    item.price <= max
-                )
-            }
-                else {            // Name & Min & Max & category
-                return (
-                    // Semua string itu mengandung string kosong (true)
-                    item.name_product.toLowerCase().includes(name.toLowerCase())
-                    &&
-                    item.price >= min
-                    &&
-                    item.price <= max
-                    &&
-                    item.category_product == category_product
-                )
-            }
-        })
-        console.log(arrSearch)
-        this.setState({products: arrSearch})
+        let result = this.state.searchProducts
+        if (name.length > 0) {
+            result = result.filter(item => item.name_product.toLowerCase().includes(name.toLowerCase()))
+        }
+        if (category_product != null) {
+            result = result.filter(item => item.category_id == category_product)
+        }
+        if (!isNaN(min)) {
+            result = result.filter(item => item.price >= min)
+        }
+        if (!isNaN(max)) {
+            result = result.filter(item => item.price <= max)
+        }
+        //  var arrSearch = this.state.searchProducts.filter(item => {
+        //     // console.log(item.category_product)
+        //     // tinggal ditambahin name min and max tanpa kategori
+        //     // tinggal ditambahin kategori sama min
+        //     //tinggal ditambahin kategori sama max
+        //     // tinggal ditambahin min dan max
+        //     if(isNaN(min) && isNaN(max) && category_product == null) { // search by name
+        //         return (item.name_product.toLowerCase().includes(name.toLowerCase()))
+        //     }
+        //     else if(isNaN(min) && isNaN(max)){ // Search by Name and category
+        //         return (
+        //             item.name_product.toLowerCase().includes(name.toLowerCase()) &&  item.category_id == category_product
+        //         )
+        //      } else if (!name && isNaN(min) && isNaN(max)) { //search by category
+        //         return (
+        //             item.category_id == category_product)
+        //      } else if (isNaN(min)) { // search by name and max and category
+        //         return (item.name_product.toLowerCase().includes(name.toLowerCase())
+        //             &&
+        //             item.price <= max)
+        //             &&
+        //             item.category_id == category_product
+        //      } 
+        //      else if(isNaN(max)){ // search by Name and Min & category
+        //         return (
+        //             item.name_product.toLowerCase().includes(name.toLowerCase())
+        //             &&
+        //             item.price >= min
+        //             &&
+        //             item.category_id == category_product
+        //         )
+        //     } else if (!name && isNaN(max) && category_product == null) { // search by min
+        //         return (
+        //             item.price >= min
+        //         )
+        //     } else if (!name && isNaN(min) && category_product == null) { // search by max
+        //         return (
+        //             item.price <= max
+        //         )
+        //     }
+        //         else {            // Name & Min & Max & category
+        //         return (
+        //             // Semua string itu mengandung string kosong (true)
+        //             item.name_product.toLowerCase().includes(name.toLowerCase())
+        //             &&
+        //             item.price >= min
+        //             &&
+        //             item.price <= max
+        //             &&
+        //             item.category_product == category_product
+        //         )
+        //     }
+        // })
+        console.log(result)
+        this.setState({products: result})
         //console.log(category)
     }
 
