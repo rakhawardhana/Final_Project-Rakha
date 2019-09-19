@@ -7,7 +7,7 @@ class Item extends Component {
 
     state = {
         products: [],
-        searchProducts: [],
+        searchProducts: []
         //searchCategory: []
     }
 

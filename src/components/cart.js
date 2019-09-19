@@ -9,7 +9,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 class Cart extends Component {
 
     constructor(props){
-        super(props)
+        super(props)  // ngirim parameter ke parent inheritance 
         this.state = { 
             products: [],
             modal: false,
@@ -182,8 +182,8 @@ class Cart extends Component {
                         <th scope="col">NAME</th>
                         <th scope="col">DESC</th>
                         <th scope="col">PRICE</th>
-                        <th scope="col">PICTURE</th>
                         <th scope="col">JUMLAH</th>
+                        <th scope="col">PICTURE</th>
                         <th scope="col">ACTION</th>
                     </tr>
                 </thead>

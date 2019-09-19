@@ -48,7 +48,7 @@ class ManageProduct extends Component {
         axios.get('/categories/')
             .then((res) =>{
                 this.setState({categories: res.data.map(c => <option value={c.id}>{c.category_product}</option>)})
-                if (res.data[0]) this.setState({selected_category: res.data[0].id})
+                if (res.data[0]) this.setState({selected_category: res.data[0].id}) // automatic tidak bernilai null
             })
     }
 
@@ -91,6 +91,7 @@ class ManageProduct extends Component {
         ).then (res => {
             console.log(res.data)
             // value category_id nya berupa id, bukan category_product
+            document.location.reload(true)
         })
         
     }
@@ -316,7 +317,7 @@ class ManageProduct extends Component {
                          <ModalFooter>
                            <Button color="primary"  onClick={() => {
                                 this.toggle()
-                                this.edit()}} >Do Something</Button>
+                                this.edit()}} >Edit</Button>
                            {/* {' '} */}
                            <Button color="secondary" onClick={this.toggle}>Cancel</Button>
                         </ModalFooter>

@@ -72,12 +72,12 @@ class DetailProduct extends Component {
                 <img className='list' alt='' style={{width: 150, height: 150}} src={`http://localhost:2019/products/avatar/${avatar}`}/>
                 <div className='card-body'>
                     <h3 className ='card-title'>Product: {name_product}</h3>
-                    <p className='card-text'>Description: {category_id}</p>
+                    <p className='card-text'>Quantity: {quantity}</p>
                     <p className='card-text'>Description: {description}</p>
                     <p className='card-text'>Price: Rp.{price}</p>
                     <p className='card-text'>Price: Rp.{quantity}</p>
-                    <form className="input-group my-3"><input ref={input => this.name = input} className="form-control" defaultValue="0" type="number"/></form>
-                    <button className='btn btn-primary'  >Add To Cart</button>
+                    {/* <form className="input-group my-3"><input ref={input => this.name = input} className="form-control" defaultValue="0" type="number"/></form>
+                    <button className='btn btn-primary'  >Add To Cart</button> */}
                 </div>
             </div>
         )

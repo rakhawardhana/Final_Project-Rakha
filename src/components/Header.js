@@ -6,32 +6,7 @@ import { logoutUser } from '../actions'
 
 
 
-// class Header extends Component {
-// 	render() {
-// 		return (
-// 			<header>
-// 				<nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-// 					<div className="container">
-// 						<Link className="navbar-brand" to="/">
-// 							COFFEE EX MACHINE
-// 						</Link>
 
-// 						<ul className="navbar-nav mr-auto">
-// 							<li className="nav-item active">
-// 								<Link className="nav-link"  to="./Aboutus">
-// 									SIAPA KITA?
-// 									<span className="sr-only" />
-// 								</Link>
-// 							</li>
-// 						</ul>
-// 					</div>
-// 				</nav>
-// 			</header>
-// 		);
-// 	}
-// }
-
-// export default Header;
 
 import {
     Button,
@@ -131,6 +106,12 @@ class Header extends Component {
                         <DropdownItem>
                         <Link to='/cart' >Cart</Link>
                         </DropdownItem>
+                        <DropdownItem>
+                        <Link to='/profile' >Profile</Link>
+                        </DropdownItem>
+                        <DropdownItem>
+                        <Link to='/editprofile' >Edit Profile</Link>
+                        </DropdownItem>
                         <DropdownItem divider />
                         <Link to='/login' >
                         <Button className='dropdown-item' onClick={this.onButtonClick}>
@@ -144,7 +125,6 @@ class Header extends Component {
                 </Navbar>
             </div>
             
-                    
           );
         }
     

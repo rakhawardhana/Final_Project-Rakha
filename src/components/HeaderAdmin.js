@@ -61,11 +61,11 @@ class HeaderAdmin extends Component {
                         </NavItem>
                         </Nav>
                         <Nav className= "ml-auto" navbar>
-                        <NavItem>
+                        {/* <NavItem>
                             <Link to='/login' >
                                 <Button color="success">Login</Button>
                             </Link>
-                        </NavItem>
+                        </NavItem> */}
                         </Nav>
                     </Collapse>
                     </Navbar>

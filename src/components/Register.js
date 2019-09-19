@@ -1,9 +1,31 @@
 import React, { Component } from 'react'
 import axios from '../config/axios'
-
+import { Link, Redirect } from 'react-router-dom'
 
 class Register extends Component {
 
+    state = {
+        
+        redirect: false
+    }
+    
+    refresh = (reload) => {
+        document.location.reload(reload)
+      }
+    
+    
+    setRedirect = () => {
+        this.setState({
+          redirect: true
+        })
+      }
+    
+    renderRedirect = () => {
+        if(this.state.redirect){
+          return <Redirect to = '/login' />
+        }
+      }
+    
 
 
     
@@ -21,8 +43,9 @@ class Register extends Component {
                 first_name, last_name, username, email, gender, password
             }
         ).then(res => {
-            console.log(res)
-            alert("DATA BERHASIL DI INPUT")
+            // console.log(res)
+            // alert("DATA BERHASIL DI INPUT")
+            this.setRedirect()
         }).catch(error => {
             console.log(error)
         })
@@ -37,6 +60,7 @@ class Register extends Component {
         
         return (
             <div className='container' style={{paddingBottom: "100px"}}>
+                {this.renderRedirect()}
                     <form>
                         <h1>REGISTER</h1>
                         <div className="form-group">

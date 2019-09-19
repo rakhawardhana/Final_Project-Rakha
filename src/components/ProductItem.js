@@ -4,14 +4,29 @@ import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import axios from 'axios';
 
-
 class ProductItem extends Component {
-
     //const id itu dari id user dari redux, buat patokan table cart
-   
-
+    state = {        
+        redirect: false
+    }
     
-
+    refresh = (reload) => {
+        document.location.reload(reload)
+      }
+    
+    
+    setRedirect = () => {
+        this.setState({
+          redirect: true
+        })
+      }
+    
+    renderRedirect = () => {
+        if(this.state.redirect){
+          return <Redirect to = '/login' />
+        }
+      }
+    
 
     addToCart = () => {
         var quantity = Number.parseInt(this.quantity.value)
@@ -21,18 +36,20 @@ class ProductItem extends Component {
         // const price = this.props.item.price
         // const picture = this.props.item.src
         const product_id = this.props.item.id
+        const userId = this.props.user.id
         // console.log(jumlah)
         
         // get cart untuk tau itu udah ada apa belum di cart
         // get cart ini hanya nampilin cart_product dengan id cart yang belom verified atau dibuang
         if(quantity > 0 && id !== ""){
                 axios.get(
-                    'http://localhost:2019/cart_product/' + product_id
+                    'http://localhost:2019/cart_product/' + product_id + `/${userId}`
                 ).then( res => {
                     var newQuantity = res.data.quantity 
                     console.log(newQuantity)
                     console.log(newQuantity + quantity)
                     //console.log(res.data.length)
+                    console.log(res.data)
                     if(res.data) 
                     
                 // kalau udah ada, jadinya nge get cart buat dapetin quantity lama buat di jumlahkan sama quantity baru
@@ -48,6 +65,11 @@ class ProductItem extends Component {
                                 console.log(error)
                                 alert('DILARANG INPUT MELEBIHI STOCK')
                             })
+
+                            // let response = await axios.patch('http://localhost:2019/cart_product/' + product_id, {
+                            //     quantity: newQuantity + quantity
+                            // })
+
                                     
                             //})
                       
@@ -77,21 +99,22 @@ class ProductItem extends Component {
                
                 alert('LOGIN PLEASE!!')
                 //return <Redirect to='/login'/>
+                this.setRedirect()
                 
                 // nanti disini render buat pindah halaman
             } else{ 
                 alert('ISI DULU JUMLAHNYA')
-            }
-            
+            }   
         }
-        
     }
 
 
     render(){
         console.log(this.props)
         return (
+            
             <div className="card col-3 m-5">
+                 {this.renderRedirect()}
                 <img className='list' alt='' style={{width: 150, height: 150}} src={`http://localhost:2019/products/avatar/${this.props.item.avatar}`}/>
                 <div className='card-body'>
                     <h5 className='card-title'> {this.props.item.name_product}</h5>
@@ -115,6 +138,5 @@ const mapStateToProps = state => {
         user: state.auth // {id, username}
     }
 }
-
 
 export default connect(mapStateToProps)(ProductItem)

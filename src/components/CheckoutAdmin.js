@@ -3,6 +3,7 @@ import axios from '../config/axios'
 import { connect } from 'react-redux'
 import {Redirect} from 'react-router-dom'
 //import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import {Link, RichText, Date} from 'prismic-reactjs'
 
 
 // get checkout and products, 
@@ -106,11 +107,16 @@ class CheckoutAdmin extends Component {
     renderList = () => {
     
         return this.state.checkout.map( item  => { // {id, name, price, desc, src}
+            //const datetime = item.created_at.split(/[- :]/)
+            //const eventDate = Date(document.item.created_at)
+                // const document = item.created_at
+                // const eventDate = Date(document.data.event_date).toString()
+            // const formattedDate = Moment(eventDate).format("lll")
             if (item.verified == null) {
                 return (
                     <tr key={item.id}>
                         <td>{item.id}</td>
-                        <td>{item.name_product}{item.quantity}</td>
+                        <td>{item.name_product}</td>
                         <td>{item.price_sum}</td>
                         <td>{item.quantity}</td>
                         <td><img className='list' alt='' style={{width: 100, height: 100}} src={`http://localhost:2019/checkout/transfer_avatar/${item.transfer_avatar}`}/></td>
@@ -137,7 +143,7 @@ class CheckoutAdmin extends Component {
                     <tr key={item.id}>
                         <td>{item.id}</td>
                         <td>{item.name_product}{item.quantity}</td>
-                        <td>{item.price_sum}</td>
+                        <td>{item.price}</td>
                         <td>{item.quantity}</td>
                         <td><img className='list' alt='' style={{width: 100, height: 100}} src={`http://localhost:2019/checkout/transfer_avatar/${item.transfer_avatar}`}/></td>
                         <td>{item.created_at}</td>
@@ -151,7 +157,7 @@ class CheckoutAdmin extends Component {
                     <tr key={item.id}>
                         <td>{item.id}</td>
                         <td>{item.name_product}{item.quantity}</td>
-                        <td>{item.price_sum}</td>
+                        <td>{item.price}</td>
                         <td>{item.quantity}</td>
                         <td><img className='list' alt='' style={{width: 100, height: 100}} src={`http://localhost:2019/checkout/transfer_avatar/${item.transfer_avatar}`}/></td>
                         <td>{item.created_at}</td>
@@ -176,7 +182,7 @@ class CheckoutAdmin extends Component {
                             <tr>
                                 <th scope="col">ID</th> 
                                 <th scope="col">NAME</th>
-                                <th scope="col">PRICE_SUM</th>
+                                <th scope="col">PRICE PER PRODUCT</th>
                                 <th scope="col">QUANTITY</th>
                                 <th scope="col">TRANSFER AVATAR</th>
                                 <th scope="col">TANGGAL TRANSAKSI</th>

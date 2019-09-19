@@ -18,6 +18,7 @@ export const onLogin = (da_email, da_password) => {
             if(typeof(res.data) == 'string'){
                 // Print errornya
                 console.log('Eror: ' + res.data)
+                alert('email atau password salah')
             } else {
 
                 // Simpan id dan name di cookie
@@ -40,6 +41,7 @@ export const onLogin = (da_email, da_password) => {
             }
         }).catch(err => {
             console.log(err)
+            alert("email atau password salah")
         })
     }
 
